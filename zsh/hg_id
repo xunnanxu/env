@@ -1,0 +1,46 @@
+ZSH_THEME_HG_PROMPT_PREFIX="hg:%{$fg_bold[red]%}("
+ZSH_THEME_HG_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_HG_PROMPT_DIRTY="%{$fg_bold[red]%}) %{$fg[yellow]%}x"
+ZSH_THEME_HG_PROMPT_CLEAN="%{$fg_bold[red]%})"
+
+# async
+source ~/.zsh-async/async.zsh
+
+hg_status() {
+  cd "$1"
+  rev=$(hg id -i 2>/dev/null)
+  if [[ $? -ne 0 ]]; then
+    return 1
+  fi
+  bookmark=$(hg id -B 2>/dev/null)
+  if [[ -n $(hg st 2>/dev/null) ]]; then
+    suffix="$ZSH_THEME_HG_PROMPT_DIRTY"
+  else
+    suffix="$ZSH_THEME_HG_PROMPT_CLEAN"
+  fi
+  content="$rev"
+  if [[ -n $bookmark ]]; then
+    content="$content|%{$fg[yellow]%}$bookmark"
+  fi
+  echo "$ZSH_THEME_HG_PROMPT_PREFIX%{$fg[magenta]%}$content%{$reset_color%}$suffix$ZSH_THEME_HG_PROMPT_SUFFIX"
+  return 0
+}
+
+hg_status_updated() {
+  if [[ $2 -ne 0 ]]; then
+    HG_STATUS=''
+  else
+    HG_STATUS="$3 "
+  fi
+  zle reset-prompt
+}
+
+precmd() {
+  HG_STATUS=''
+  async_job hg_worker hg_status "$(pwd)"
+}
+
+async_init
+async_stop_worker hg_worker
+async_start_worker hg_worker -n
+async_register_callback hg_worker hg_status_updated

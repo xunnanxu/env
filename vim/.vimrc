@@ -3,7 +3,15 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set colorcolumn=120
+set nowrap
+" avoid the status to block Jedi-Vim's call signature display in command line
+set noshowmode
 let mapleader = ','
+
+" Use vertical line as cursor in insert mode
+let &t_SI = "\e[6 q"
+" Use block cursor in normal mode
+let &t_EI = "\e[2 q"
 
 call plug#begin('~/.vim/plugged')
 
@@ -12,9 +20,6 @@ Plug 'sheerun/vim-polyglot'
 
 " Autocompletion plugin
 Plug 'davidhalter/jedi-vim'
-
-" Additional autocompletion support
-Plug 'ervandew/supertab'
 
 Plug 'psf/black', { 'branch': 'stable' }
 
@@ -25,6 +30,9 @@ filetype plugin indent on
 " Jedi-Vim configuration
 let g:jedi#completions_enabled = 1
 let g:jedi#auto_vim_configuration = 1
+let g:jedi#use_tabs_not_buffers = 1
+let g:jedi#show_call_signatures = 2
+set pumheight=10
 
 " Supertab configuration
 let g:SuperTabDefaultCompletionType = '<C-N>'

@@ -30,9 +30,7 @@ let g:jedi#auto_vim_configuration = 1
 let g:SuperTabDefaultCompletionType = '<C-N>'
 
 function! FormatWithBlack()
-    let l:current_file = expand('%:p')
-    execute 'silent !black' l:current_file
-    edit!
+    execute 'Black'
 endfunction
 
 autocmd FileType python nnoremap <buffer> <leader>f :call FormatWithBlack()<CR>

@@ -3,6 +3,8 @@ import sys
 
 
 def get_clipboard_content() -> str:
+    # opt + \ : left double angle quotation mark 
+    # shift + opt \ : right double angle quotation mark
     try:
         # Run the pbpaste command to get clipboard content
         result = subprocess.run(

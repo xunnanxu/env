@@ -1,4 +1,5 @@
 import subprocess
+import sys
 
 
 def get_clipboard_content() -> str:
@@ -6,15 +7,21 @@ def get_clipboard_content() -> str:
         # Run the pbpaste command to get clipboard content
         result = subprocess.run(
             [
-                "osascript -e 'the clipboard as «class HTML»' | perl -ne 'print chr foreach unpack(\"C*\",pack(\"H*\",substr($_,11,-3)))'"
+                "bash",
+                "-c",
+                "set -o pipefail; osascript -e 'the clipboard as «class HTML»' | perl -ne 'print chr foreach unpack(\"C*\",pack(\"H*\",substr($_,11,-3)))'",
             ],
+            capture_output=True,
+            text=True,
             check=True,
-            shell=True,
-            stdout=subprocess.PIPE,
         )
-    except:
-        result = subprocess.run("pbpaste", stdout=subprocess.PIPE)
-    return result.stdout.decode("utf-8")
+    except subprocess.CalledProcessError as e:
+        print(
+            f"Unable to read clipboard as HTML: {e.stderr}. Fall back to text mode.",
+            flush=True,
+        )
+        result = subprocess.run("pbpaste", capture_output=True, text=True)
+    return result.stdout
 
 
 def main() -> None:

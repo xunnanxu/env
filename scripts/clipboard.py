@@ -26,9 +26,19 @@ def get_clipboard_content() -> str:
     return result.stdout
 
 
+def string_to_hex(string) -> str:
+    hex_values = [f"{ord(char):02x}" for char in string]
+    return ''.join(hex_values)
+
+
+def copy_to_clipboard(s: str) -> None:
+    hex = string_to_hex(s)
+    subprocess.run([f"osascript -e 'set the clipboard to «data HTML{hex}»'"], check=True, shell=True)
+
 def main() -> None:
     clipboard_content = get_clipboard_content()
     print("Clipboard Content:\n", clipboard_content)
+    # copy_to_clipboard(clipboard_content)
 
 
 if __name__ == "__main__":

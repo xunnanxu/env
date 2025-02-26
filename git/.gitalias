@@ -1,0 +1,6 @@
+[alias]
+    rebase-to = "!f() { if [[ -z $1 ]]; then echo 'need to specify the branch to rebase to'; exit 1; fi;  branch=${2:-$(git symbolic-ref --short HEAD)}; git rebase --onto $1 $(git merge-base $1 $branch) $branch; }; f"
+    aa = "commit -a --amend --no-edit"
+    st = "status"
+    co = "checkout"
+    cp = "!f() { git cherry-pick $(git merge-base HEAD $1)..$1; }; f"

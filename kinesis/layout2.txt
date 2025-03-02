@@ -1,0 +1,18 @@
+[hk0]>[esc]
+[caps]>[esc]
+{lalt}{caps}>{fntog}
+{hk7}>{x1}{-shift}{-ctrl}{c}{+shift}{+ctrl}
+{hk8}>{x1}{-shift}{-ctrl}{v}{+shift}{+ctrl}
+fn {hk1}>{x1}{c}
+fn {hk2}>{x1}{b}
+fn [y]>[7]
+fn [u]>[8]
+fn [i]>[9]
+fn {lalt}{caps}>{fntog}
+fn [h]>[4]
+fn [j]>[5]
+fn [k]>[6]
+fn [n]>[1]
+fn [m]>[2]
+fn [com]>[3]
+fn [rspc]>[0]
